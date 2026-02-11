@@ -1,4 +1,4 @@
-//**************************** PROJECT X ****************************** 
+//**************************** appTimer ****************************** 
 // Copyright (c) 2026 Trenser Technology Solutions
 // All Rights Reserved
 //***************************************************************************** 
@@ -19,50 +19,71 @@
 //******************************* Local Types ********************************* 
  
 //***************************** Local Constants ******************************* 
- 
+
+#define ARRAY_SIZE      32
 //***************************** Local Variables ******************************* 
  
 //****************************** Local Functions ****************************** 
  
 //*********************** Class Method Implementations ************************ 
 
-void displayFormattedTime(const char* label, struct tm* t, int showEpoch, time_t epoch) {
-    char dateStr[32];
-    char timeStr[32];
+//****************************** FUNCTION_HEADER ******************************
+// Purpose : Display formatted time information including date, time, and optional epoch.
+// Inputs  : plabel      - Pointer to a string label to print above the time/date.
+//           t           - Pointer to a struct tm containing the time information.
+//           blShowEpoch - Boolean flag to indicate whether to display epoch time.
+//           Epoch       - Epoch time value to display if blShowEpoch is true.
+// Outputs : None
+// Return  : None
+// Notes   : None
+//*****************************************************************************
 
-    // Format date and time
-    strftime(dateStr, sizeof(dateStr), "%d/%m/%Y", t);
-    strftime(timeStr, sizeof(timeStr), "%I:%M:%S %p", t);
+void DisplayFormattedTime(uint8_t* plabel, struct tm* pTimeInfo, bool blShowEpoch, time_t Epoch) 
+{
+    uint8_t ucDateStr[ARRAY_SIZE];
+    uint8_t ucTimeStr[ARRAY_SIZE];
 
-    // Print in your desired format
-    printf("%s\n----------------\n", label);
-    printf("Time : %s\n", timeStr);
-    printf("Date : %s\n", dateStr);
+    strftime(ucDateStr, sizeof(ucDateStr), "%d/%m/%Y", pTimeInfo);
+    strftime(ucTimeStr, sizeof(ucTimeStr), "%I:%M:%S %p", pTimeInfo);
 
-    if (showEpoch) {
-        printf("Epoch: %ld\n", epoch);
+    printf("%s\n----------------\n", plabel);
+    printf("Time : %s\n", ucTimeStr);
+    printf("Date : %s\n", ucDateStr);
+
+    if (blShowEpoch == true) 
+    {
+        printf("Epoch: %ld\n", Epoch);
     }
     printf("\n");
 }
 
-void displayCurrentTime() {
-    time_t rawtime;
-    struct tm timeinfo;
+//****************************** FUNCTION_HEADER ******************************
+// Purpose : Retrieve and display the current system time in multiple time zones.
+// Inputs  : None
+// Outputs : Prints formatted time and date for UTC, IST, and PST to the console.
+// Return  : None
+// Notes   : None
+//*****************************************************************************
+
+void DisplayCurrentTime() 
+{
+    time_t RawTime;
+    struct tm TimeInfo;
 
     // Get current system time
-    time(&rawtime);
+    time(&RawTime);
 
     // GMT (UTC)
-    gmtime_r(&rawtime, &timeinfo);
-    displayFormattedTime("UTC (0:00)", &timeinfo, 1, rawtime);
+    gmtime_r(&RawTime, &TimeInfo);
+    DisplayFormattedTime("UTC (0:00)", &TimeInfo, true, RawTime);
 
     // IST (+05:30)
-    time_t istTime = rawtime + 19800; // 5h30m offset in seconds
-    gmtime_r(&istTime, &timeinfo);
-    displayFormattedTime("IST (+05:30)", &timeinfo, 0, 0);
+    time_t ISTTime = RawTime + 19800; 
+    gmtime_r(&ISTTime, &TimeInfo);
+    DisplayFormattedTime("IST (+05:30)", &TimeInfo, false, 0);
 
     // PST (-8:00)
-    time_t pstTime = rawtime - 28800; // 8h offset in seconds
-    gmtime_r(&pstTime, &timeinfo);
-    displayFormattedTime("PST (-8:00)", &timeinfo, 0, 0);
+    time_t PSTTime = RawTime - 28800;
+    gmtime_r(&PSTTime, &TimeInfo);
+    DisplayFormattedTime("PST (-8:00)", &TimeInfo, false, 0);
 }

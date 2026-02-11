@@ -17,6 +17,8 @@
 //******************************* Include Files ******************************* 
 #include <time.h>   
 #include <stdio.h>  
+#include <stdbool.h>
+#include <stdint.h>
  
 //******************************* Global Types ******************************** 
  
@@ -25,8 +27,8 @@
 //***************************** Global Variables ****************************** 
  
 //**************************** Forward Declarations *************************** 
-void displayCurrentTime();   // Show system time in GMT, IST, PST
-void displayFormattedTime();     // Show epoch time with GMT date
+void DisplayCurrentTime();   
+void DisplayFormattedTime(uint8_t* plabel, struct tm* t, bool blShowEpoch, time_t Epoch) ;
  
 //***************************** Class Declaration ***************************** 
  
