@@ -1,0 +1,13 @@
+# Ignore build artifacts
+*.o
+*.s
+appTimerDemo
+
+# Ignore editor backup/swap files
+*.swp
+*~
+*.save
+
+# Ignore build directory if used
+/build/
+
