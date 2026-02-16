@@ -1,7 +1,9 @@
 # Ignore build artifacts
 *.o
 *.s
-appTimerDemo
+*.exe
+
+# Ignore VS Code settings
 .vscode/
 
 
