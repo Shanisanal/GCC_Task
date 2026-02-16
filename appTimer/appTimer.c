@@ -41,8 +41,8 @@ void DisplayFormattedTime(uint8_t* plabel, struct tm* pTimeInfo, bool blShowEpoc
     uint8_t ucDateStr[ARRAY_SIZE];
     uint8_t ucTimeStr[ARRAY_SIZE];
 
-    strftime(ucDateStr, sizeof(ucDateStr), "%d/%m/%Y", pTimeInfo);//pTimeInfo
-    strftime(ucTimeStr, sizeof(ucTimeStr), "%I:%M:%S %p", pTimeInfo);
+    strftime((char*)ucDateStr, sizeof(ucDateStr), "%d/%m/%Y", pTimeInfo);//pTimeInfo
+    strftime((char*)ucTimeStr, sizeof(ucTimeStr), "%I:%M:%S %p", pTimeInfo);
 
     printf("%s\n----------------\n", plabel);
     printf("Time : %s\n", ucTimeStr);
@@ -73,15 +73,15 @@ void DisplayCurrentTime()
 
     // GMT (UTC)
     gmtime_r(&RawTime, &TimeInfo);
-    DisplayFormattedTime("UTC (0:00)", &TimeInfo, true, RawTime);
+    DisplayFormattedTime((uint8_t*)"UTC (0:00)", &TimeInfo, true, RawTime);
 
     // IST (+05:30)
     time_t ISTTime = RawTime + 19800; 
     gmtime_r(&ISTTime, &TimeInfo);
-    DisplayFormattedTime("IST (+05:30)", &TimeInfo, false, 0);
+    DisplayFormattedTime((uint8_t*)"IST (+05:30)", &TimeInfo, false, 0);
 
     // PST (-8:00)
     time_t PSTTime = RawTime - 28800;
     gmtime_r(&PSTTime, &TimeInfo);
-    DisplayFormattedTime("PST (-8:00)", &TimeInfo, false, 0);
+    DisplayFormattedTime((uint8_t*)"PST (-8:00)", &TimeInfo, false, 0);
 }
