@@ -2,7 +2,7 @@
 *.o
 *.s
 appTimerDemo
-.vscode
+.vscode/
 
 # Ignore editor backup/swap files
 *.swp
