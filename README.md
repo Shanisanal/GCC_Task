@@ -12,5 +12,5 @@
 
 ##  Compilation and Run
 ### Direct GCC command:
-gcc main.c appTimer/appTimer.c -o appTimer.exe
-./appTimer.exe 
+- gcc main.c appTimer/appTimer.c -o appTimer.exe
+- ./appTimer.exe 
