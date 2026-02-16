@@ -4,6 +4,7 @@
 appTimerDemo
 .vscode/
 
+
 # Ignore editor backup/swap files
 *.swp
 *~
