@@ -25,9 +25,7 @@
  
 //****************************** Local Functions ****************************** 
  
-//*********************** Class Method Implementations ************************ 
-
-//****************************** FUNCTION_HEADER ******************************
+//****************************** DisplayFormattedTime ******************************
 // Purpose : Display formatted time information including date, time, and optional epoch.
 // Inputs  : plabel      - Pointer to a string label to print above the time/date.
 //           t           - Pointer to a struct tm containing the time information.
@@ -43,7 +41,7 @@ void DisplayFormattedTime(uint8_t* plabel, struct tm* pTimeInfo, bool blShowEpoc
     uint8_t ucDateStr[ARRAY_SIZE];
     uint8_t ucTimeStr[ARRAY_SIZE];
 
-    strftime(ucDateStr, sizeof(ucDateStr), "%d/%m/%Y", pTimeInfo);
+    strftime(ucDateStr, sizeof(ucDateStr), "%d/%m/%Y", pTimeInfo);//pTimeInfo
     strftime(ucTimeStr, sizeof(ucTimeStr), "%I:%M:%S %p", pTimeInfo);
 
     printf("%s\n----------------\n", plabel);
@@ -57,7 +55,7 @@ void DisplayFormattedTime(uint8_t* plabel, struct tm* pTimeInfo, bool blShowEpoc
     printf("\n");
 }
 
-//****************************** FUNCTION_HEADER ******************************
+//****************************** DisplayCurrentTime ******************************
 // Purpose : Retrieve and display the current system time in multiple time zones.
 // Inputs  : None
 // Outputs : Prints formatted time and date for UTC, IST, and PST to the console.
