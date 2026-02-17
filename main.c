@@ -14,7 +14,9 @@
 //******************************* Include Files *******************************
 #include <stdio.h>
 #include <unistd.h>     
+#include <stdbool.h>
 #include "appTimer/appTimer.h"
+#include "LedToggle/LedToggle.h"
 
 //******************************* Local Types ********************************* 
  
