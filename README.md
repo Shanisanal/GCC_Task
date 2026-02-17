@@ -1,16 +1,15 @@
 ##  Project Overview
-- C program to display the system’s current time in real-time.
-- Shows time and date in GMT, IST, and PST timezones.
-- Displays Epoch time in GMT with date.
-- Refreshes the time every second.
+- C program to simulate an LED toggling between ON and OFF states.
+- Displays the LED state in the console output.
+- The toggling happens every second in real time.
 
 ##  Files
-- `main.c` → Entry point, calls time display functions.
-- `appTimer/appTimer.c` → Implementation of time and formatting logic.
+- `main.c` → Entry point, calls LED toggling functions.
+- `appTimer/appTimer.c` → Implementation of the LED toggle function.
 - `appTimer/appTimer.h` → Header file with function declarations.
-- `.gitignore` → Ignores generated build artifacts (`*.o`, `*.s`, `appTimer.exe`).
+- `.gitignore` → Ignores generated build artifacts (`*.o`, `*.s`, `ledtoggle.exe`).
 
 ##  Compilation and Run
 ### Direct GCC command:
-- gcc main.c appTimer/appTimer.c -o appTimer.exe
-- ./appTimer.exe 
+- gcc main.c LedToggle/LedToggle.c -o ledtoggle.exe
+- ./ledtoggle.exe
