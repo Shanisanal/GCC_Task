@@ -41,11 +41,14 @@
 
 int main(void)
 {
+    bool bLedState = false;
+
     while(1)
     {
-        printf("==================================\n");
-        DisplayCurrentTime();   
-        printf("==================================\n\n");
+
+        ToggleLED(bLedState);
+
+        bLedState = !bLedState;
 
         sleep(1);   
     }
