@@ -5,8 +5,8 @@
 
 ##  Files
 - `main.c` → Entry point, calls LED toggling functions.
-- `appTimer/appTimer.c` → Implementation of the LED toggle function.
-- `appTimer/appTimer.h` → Header file with function declarations.
+- `LedToggle/LedToggle.c` → Implementation of the LED toggle function.
+- `LedToggle/LedToggle.h` → Header file with function declarations.
 - `.gitignore` → Ignores generated build artifacts (`*.o`, `*.s`, `ledtoggle.exe`).
 
 ##  Compilation and Run
