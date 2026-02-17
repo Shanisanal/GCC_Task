@@ -1,9 +1,9 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -O2
-SRC = main.c appTimer/appTimer.c
+SRC = main.c LedToggle/LedToggle.c
 OBJ = $(SRC:.c=.o)
 ASM = $(SRC:.c=.s)
-TARGET = appTimer.exe
+TARGET = ledtoggle.exe
 
 all: $(TARGET)
 
@@ -20,3 +20,4 @@ assembly: $(ASM)
 
 clean:
 	rm -f $(OBJ) $(ASM) $(TARGET)
+
