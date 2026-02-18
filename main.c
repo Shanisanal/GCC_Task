@@ -27,15 +27,15 @@
 //****************************** Local Functions ****************************** 
 
 //****************************** main ******************************
-// Purpose : Continuously display formatted time information in multiple timezones
-//           (GMT, IST, PST) along with optional epoch time. The display refreshes
-//           every second to show real-time updates.
+// Purpose : Continuously toggle the LED state every second.
+//           Demonstrates simple LED simulation by alternating
+//           between ON and OFF states.
 // Inputs  : None
 // Outputs : None
 // Return  : int - Returns 0 upon successful completion.
 // Notes   : 
-//   - Calls DisplayCurrentTime() to print the current time details.
-//   - Uses sleep(1) to refresh the output every second.
+//   - Calls ToggleLED() to print or simulate LED state.
+//   - Uses sleep(1) to wait one second between toggles.
 //   - Runs indefinitely until manually terminated.
 //*****************************************************************************
 
