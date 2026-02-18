@@ -2,6 +2,7 @@
 *.o
 *.s
 *.exe
+*.bin
 
 # Ignore VS Code settings
 .vscode/
