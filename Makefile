@@ -1,107 +1,117 @@
-# Variables 
-# Compiler
-CC = gcc
+# Compiler setup
+CC       = gcc
+CROSS_CC = aarch64-linux-gnu-$(CC)
+CFLAGS   = -Wall -Wextra -O2
+DEBUGFLAGS = -Wall -Wextra -O0 -g
 
-# Cross compiler
-CROSS_CC = aarch64-linux-gnu-${CC}
+# Source directories (flexible to add more)
+SRC_DIRS = appTimer LedToggle
 
-# List of all sub directories
-SUBDIR = . appTimer LedToggle 
+# Search for .c source files inside the source directories
+vpath %.c $(SRC_DIRS)
 
-# List of all include directories with header file
-INCDIR = . appTimer LedToggle
+# Collect all .c files automatically (include project root `main.c`)
+SRCS = $(wildcard main.c) $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.c))
 
-# Dependency Flags
+# Name of the program's main executable (only one executable is produced)
+MAIN = ledtoggle
 
-# Flags with include path
-CFLAGS = -Wall -Wextra -O2
+# Extract base filenames (without path or extension)
+BASENAMES = $(basename $(notdir $(SRCS)))
 
-# Make a list of C source files in project
-# foreach will iterate through SUBDIR and find all .c file
-SOURCE = $(foreach D,$(SUBDIR),$(wildcard $(D)/*.c))
-file_names = $(notdir $(SOURCE))
+# Release and debug folders
+RELEASE_DIR = release
+DEBUG_DIR   = debug
 
-# OBJECTS list can be generated from SOURCE_FILES using patsubst
-# OBJECTS = main.o appTimer/appTimer.o appLed/appLed.o Console/Console.o
-OBJECTS = $(patsubst %.c,release/%.o,$(file_names))
+# Targets
+TARGETS = linux rpi
 
-# Create dependency files incase headers changed
-DEPND_FILES = $(patsubst %.c,%.d,$(SOURCE_FILES))
+$(RELEASE_DIR):
+	mkdir -p	$(RELEASE_DIR)
 
-# Create assembly file List
-ASSEMBLY_FILES = $(patsubst %.c,release/%.s,$(file_names))
+$(DEBUG_DIR)/:
+	mkdir -p	$(DEBUG_DIR)
 
-VPATH = .:appTimer:LedToggle
+# Pattern rules for release builds
+$(RELEASE_DIR)/%_linux.o: %.c |	$(RELEASE_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
-# Target : Dependencies
-# Specify the rule for Dependencies
-all : Linux Rpi
+$(RELEASE_DIR)/%_linux.s: %.c |	$(RELEASE_DIR)
+	$(CC) $(CFLAGS) -S $< -o $@
 
-# Here Linux build depend on 4 different files
-# So we need to define rules for each one of these
-# Instead make a list of all these dependencis and use the list
+$(RELEASE_DIR)/%_linux.exe: $(RELEASE_DIR)/%_linux.o |	$(RELEASE_DIR)
+	$(CC) $(CFLAGS) $< -o $@
 
-# Linux : main.o appTimer/appTimer.o appLed/appLed.o Console/Console.o
+$(RELEASE_DIR)/%_rpi.o: %.c
+	$(CROSS_CC) $(CFLAGS) -c $< -o $@
 
-# $@ will substitute output name with Target
-# $^ will replaced with first dependency name 
-# $< only use c Dependencies
-#Linux : CreateRelease CreateDebug Assembly Executable Object Debug
-Linux : CreateRelease Assembly Object Executable
+$(RELEASE_DIR)/%_rpi.s: %.c
+	$(CROSS_CC) $(CFLAGS) -S $< -o $@
 
-# Build Raspberry Pi output
-# Build using cross compiler
-# Store target in Release folder
-Rpi	: CreateRelease Assembly Object Executable
+$(RELEASE_DIR)/%_rpi.exe: $(RELEASE_DIR)/%_rpi.o
+	$(CROSS_CC) $(CFLAGS) $< -o $@
 
-# Need to define rules for OBJECTS
-# $(CC) $(notdir $^) -o Release/LinuxOutput Need to explore
-Object : $(OBJECTS)
-	$(CC) $^ -o release/ledtoggle.exe
+# Pattern rules for debug builds (ensure debug dir exists before writing files)
+$(DEBUG_DIR)/%_linux.o: %.c | $(DEBUG_DIR)/
+	$(CC) $(DEBUGFLAGS) -c $< -o $@
 
-# OBJECTS or .o files depend on source or .c files
-# Need a rule for every .o file
-# Instead of wriring all of them use %
-# % operator is a wildcard means any one in list 
-# Expression means anyone with .o will have dependency on corresponding .c
-# $(CC) $(CFLAGS) -g $< -o Debug/$(notdir $@)
-release/%.o : %.c
-	$(CC) $(CFLAGS) -c $^ -o $@
+$(DEBUG_DIR)/%_linux.s: %.c | $(DEBUG_DIR)/
+	$(CC) $(DEBUGFLAGS) -S $< -o $@
 
-# Need to define rules for ASSEMBLY
-Assembly : $(ASSEMBLY_FILES)
-	$(CC) $(CFLAGS) $^ -o release/ledtoggle_wsl.bin
+$(DEBUG_DIR)/%_linux.exe: $(DEBUG_DIR)/%_linux.o | $(DEBUG_DIR)/
+	$(CC) $(DEBUGFLAGS) $< -o $@
 
-# ASSEMBLY or .s files depend on source or .c files
-# Need a rule for every .s file
-# Expression means anyone with .o will have dependency on corresponding .c
-release/%.s : %.c
-	$(CC) $(CFLAGS) -S $^ -o $@
+$(DEBUG_DIR)/%_rpi.o: %.c | $(DEBUG_DIR)/
+	$(CROSS_CC) $(DEBUGFLAGS) -c $< -o $@
 
-# Need to define rules for Executable
-Executable : $(SOURCE) CreateRelease
-	$(CC) $(CFLAGS) $(SOURCE) -o release/ledtoggle.exe
+$(DEBUG_DIR)/%_rpi.s: %.c | $(DEBUG_DIR)/
+	$(CROSS_CC) $(DEBUGFLAGS) -S $< -o $@
 
-# Create folder named Release using mkdir
-CreateRelease :
-	mkdir -p release
+$(DEBUG_DIR)/%_rpi.exe: $(DEBUG_DIR)/%_rpi.o | $(DEBUG_DIR)/
+	$(CROSS_CC) $(DEBUGFLAGS) $< -o $@
 
-Rpi : CreateRelease
-	$(CROSS_CC)	\
-	$(CFLAGS)	\
-	$(SOURCE)	\
-	-o release/ledtoggle_pi.bin
+# Build lists
+RELEASE_LINUX_O   = $(addprefix $(RELEASE_DIR)/,$(addsuffix _linux.o,$(BASENAMES)))
+RELEASE_LINUX_S   = $(addprefix $(RELEASE_DIR)/,$(addsuffix _linux.s,$(BASENAMES)))
+RELEASE_LINUX_EXE = $(RELEASE_DIR)/$(MAIN)_linux.exe
 
-# Clean is needed to clean everything 
-# Includes rules to remove and clear
-.PHONY = clean
-clean : 
-	rm -f main
-	find . -type f -name "*.o" -delete
-	find . -type f -name "*.s" -delete
-	find . -type f -name "*.bin" -delete
-	find . -type f -name "*.exe" -delete
-		
-	
-# Include Dependencies
-# -include $(DEPND_FILES)
+# Link the single release executable from all release object files
+$(RELEASE_DIR)/$(MAIN)_linux.exe: $(RELEASE_LINUX_O) | $(RELEASE_DIR)
+	$(CC) $(CFLAGS) $^ -o $@
+
+Linux: $(RELEASE_LINUX_O) $(RELEASE_LINUX_S) $(RELEASE_LINUX_EXE)
+
+RELEASE_RPI_O = $(addprefix $(RELEASE_DIR)/,$(addsuffix _rpi.o,$(BASENAMES)))
+RELEASE_RPI_S = $(addprefix $(RELEASE_DIR)/,$(addsuffix _rpi.s,$(BASENAMES)))
+RELEASE_RPI_EXE = $(RELEASE_DIR)/$(MAIN)_rpi.exe
+
+Rpi:	$(RELEASE_RPI_O) $(RELEASE_RPI_S) $(RELEASE_RPI_EXE)
+
+# Link the single RPi executable from all _rpi.o object files
+$(RELEASE_DIR)/$(MAIN)_rpi.exe: $(RELEASE_RPI_O) | $(RELEASE_DIR)
+	$(CROSS_CC) $(CFLAGS) $^ -o $@
+
+DEBUG_LINUX_O   = $(addprefix $(DEBUG_DIR)/,$(addsuffix _linux.o,$(BASENAMES)))
+DEBUG_LINUX_S   = $(addprefix $(DEBUG_DIR)/,$(addsuffix _linux.s,$(BASENAMES)))
+DEBUG_LINUX_EXE = $(DEBUG_DIR)/$(MAIN)_linux.exe
+
+DEBUG_RPI_O     = $(addprefix $(DEBUG_DIR)/,$(addsuffix _rpi.o,$(BASENAMES)))
+DEBUG_RPI_S     = $(addprefix $(DEBUG_DIR)/,$(addsuffix _rpi.s,$(BASENAMES)))
+DEBUG_RPI_EXE   = $(DEBUG_DIR)/$(MAIN)_rpi.exe
+
+# Link debug executables from all debug object files
+$(DEBUG_DIR)/$(MAIN)_linux.exe: $(DEBUG_LINUX_O) | $(DEBUG_DIR)
+	$(CC) $(DEBUGFLAGS) $^ -o $@
+
+$(DEBUG_DIR)/$(MAIN)_rpi.exe: $(DEBUG_RPI_O) | $(DEBUG_DIR)
+	$(CROSS_CC) $(DEBUGFLAGS) $^ -o $@
+
+# Phony targets
+.PHONY: all Linux Rpi debug clean
+
+all: $(RELEASE_LINUX) $(RELEASE_RPI)
+
+debug: $(DEBUG_LINUX_EXE) $(DEBUG_RPI_EXE)
+
+clean:
+	rm -rf $(RELEASE_DIR)/* $(DEBUG_DIR)/*
