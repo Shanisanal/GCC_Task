@@ -4,7 +4,7 @@ CROSS_CC = aarch64-linux-gnu-$(CC)
 CFLAGS   = -Wall -Wextra -O2
 DEBUGFLAGS = -Wall -Wextra -O0 -g
 
-# Source directories (flexible to add more)
+# Source directories 
 SRC_DIRS = appTimer LedToggle
 
 # Search for .c source files inside the source directories
