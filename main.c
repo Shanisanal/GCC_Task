@@ -49,7 +49,6 @@ int main(void)
         ToggleLED(bLedState);
 
         bLedState = !bLedState;
-
         sleep(1);   
     }
 
