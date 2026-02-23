@@ -114,4 +114,4 @@ all: $(RELEASE_LINUX) $(RELEASE_RPI)
 debug: $(DEBUG_LINUX_EXE) $(DEBUG_RPI_EXE)
 
 clean:
-	rm -rf $(RELEASE_DIR)/* $(DEBUG_DIR)/*
+	rm -rf $(RELEASE_DIR) $(DEBUG_DIR)
