@@ -4,8 +4,8 @@
 //***************************************************************************** 
 // 
 // File      : LedToggle.c 
-// Summary   :  
-// Note      :  
+// Summary   : Implementation of LED toggle print functionality for simulation purposes
+// Note      : Provides functions declared in LedToggle.h  
 // Author    : Shani
 // Date      : Feb 17, 2026 
 // 
@@ -29,7 +29,7 @@
 // Inputs  : bLedState - Boolean flag indicating the LED state.
 //                     - true  : LED is ON
 //                     - false : LED is OFF
-// Outputs : None
+// Outputs : Produces terminal print indicating the LED state.
 // Return  : None
 // Notes   : None
 //********************************************************************************
