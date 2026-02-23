@@ -1,10 +1,26 @@
+#*************************** CMake Configuration ******************************
+# Copyright (c) 2026 Trenser Technologies Pvt. Ltd.
+# All Rights Reserved
+#******************************************************************************
+# 
+# Project : LED Toggle Task
+# Summary : Build configuration for C-based LED toggle print system.
+# Note    : Requires CMake 3.15+
+# 
+#******************************************************************************
+
+#------------------------------------------------------------------------------
+# Project and Toolchain Settings
+#------------------------------------------------------------------------------
 cmake_minimum_required(VERSION 3.15)
 project(LedToggle C)
 
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
-# Source directories
+#------------------------------------------------------------------------------ 
+# Source Directories and Files 
+#------------------------------------------------------------------------------
 set(SRC_DIRS appTimer LedToggle)
 set(SOURCES "${CMAKE_SOURCE_DIR}/main.c")
 foreach(dir ${SRC_DIRS})
@@ -12,11 +28,15 @@ foreach(dir ${SRC_DIRS})
     list(APPEND SOURCES ${SRC_${dir}})
 endforeach()
 
-# Output directories
+#------------------------------------------------------------------------------ 
+# Output Directories 
+#------------------------------------------------------------------------------
 set(RELEASE_DIR ${CMAKE_SOURCE_DIR}/release)
 set(DEBUG_DIR   ${CMAKE_SOURCE_DIR}/debug)
 
-# Compiler flags
+#------------------------------------------------------------------------------ 
+# Compiler Flags 
+#------------------------------------------------------------------------------
 set(RELEASE_FLAGS -Wall;-Wextra;-O2)
 set(DEBUG_FLAGS   -Wall;-Wextra;-O0;-g)
 
@@ -56,7 +76,9 @@ function(add_build target compiler flags outdir)
     )
 endfunction()
 
-# Release builds
+#------------------------------------------------------------------------------ 
+# Build Targets 
+#------------------------------------------------------------------------------
 add_build(linux gcc "${RELEASE_FLAGS}" ${RELEASE_DIR})
 add_build(rpi   aarch64-linux-gnu-gcc "${RELEASE_FLAGS}" ${RELEASE_DIR})
 
@@ -72,3 +94,7 @@ add_custom_target(build_debug DEPENDS linux_debug_build rpi_debug_build)
 add_custom_target(clean_build
     COMMAND ${CMAKE_COMMAND} -E rm -rf ${RELEASE_DIR} ${DEBUG_DIR}
 )
+
+#------------------------------------------------------------------------------
+# End of File
+#------------------------------------------------------------------------------
