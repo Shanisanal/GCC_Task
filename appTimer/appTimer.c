@@ -55,7 +55,7 @@ void DisplayFormattedTime(uint8_t* plabel, struct tm* pTimeInfo, bool blShowEpoc
 
     if (blShowEpoch == true) 
     {
-        printf("Epoch: %ld\n", Epoch);
+        printf("Epoch: %ld\n", (long)Epoch);
     }
     printf("\n");
 }
@@ -90,3 +90,5 @@ void DisplayCurrentTime()
     gmtime_r(&PSTTime, &TimeInfo);
     DisplayFormattedTime((uint8_t*)"PST (-8:00)", &TimeInfo, false, 0);
 }
+
+// EOF
