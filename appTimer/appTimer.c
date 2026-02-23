@@ -28,7 +28,7 @@
 //****************************** DisplayFormattedTime ******************************
 // Purpose : Display formatted time information including date, time, and optional epoch.
 // Inputs  : plabel      - Pointer to a string label to print above the time/date.
-//           t           - Pointer to a struct tm containing the time information.
+//           pTimeInfo   - Pointer to a struct tm containing the time information.
 //           blShowEpoch - Boolean flag to indicate whether to display epoch time.
 //           Epoch       - Epoch time value to display if blShowEpoch is true.
 // Outputs : None
@@ -38,8 +38,13 @@
 
 void DisplayFormattedTime(uint8_t* plabel, struct tm* pTimeInfo, bool blShowEpoch, time_t Epoch) 
 {
-    uint8_t ucDateStr[ARRAY_SIZE];
-    uint8_t ucTimeStr[ARRAY_SIZE];
+    if(plabel == NULL || pTimeInfo == NULL) 
+    {
+        return;
+    }
+
+    uint8_t ucDateStr[ARRAY_SIZE]= {0};
+    uint8_t ucTimeStr[ARRAY_SIZE]= {0};
 
     strftime((char*)ucDateStr, sizeof(ucDateStr), "%d/%m/%Y", pTimeInfo);//pTimeInfo
     strftime((char*)ucTimeStr, sizeof(ucTimeStr), "%I:%M:%S %p", pTimeInfo);
