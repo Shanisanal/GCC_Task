@@ -19,8 +19,10 @@
 //******************************* Local Types ********************************* 
  
 //***************************** Local Constants ******************************* 
-
 #define ARRAY_SIZE      32
+#define OFFSET_IST      19800   
+#define OFFSET_PST      28800   
+
 //***************************** Local Variables ******************************* 
  
 //****************************** Local Functions ****************************** 
@@ -82,12 +84,12 @@ void DisplayCurrentTime()
     DisplayFormattedTime((uint8_t*)"UTC (0:00)", &stTimeInfo, true, lRawTime);
 
     // IST (+05:30)
-    time_t ISTTime = lRawTime + 19800; 
+    time_t ISTTime = lRawTime + OFFSET_IST; 
     gmtime_r(&ISTTime, &stTimeInfo);
     DisplayFormattedTime((uint8_t*)"IST (+05:30)", &stTimeInfo, false, 0);
 
     // PST (-8:00)
-    time_t PSTTime = lRawTime - 28800;
+    time_t PSTTime = lRawTime - OFFSET_PST;
     gmtime_r(&PSTTime, &stTimeInfo);
     DisplayFormattedTime((uint8_t*)"PST (-8:00)", &stTimeInfo, false, 0);
 }
