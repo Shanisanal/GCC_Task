@@ -70,25 +70,25 @@ void DisplayFormattedTime(uint8_t* plabel, struct tm* pTimeInfo, bool blShowEpoc
 
 void DisplayCurrentTime() 
 {
-    time_t RawTime;
-    struct tm TimeInfo;
+    time_t lRawTime = 0;
+    struct tm stTimeInfo = {0};
 
     // Get current system time
-    time(&RawTime);
+    time(&lRawTime);
 
     // GMT (UTC)
-    gmtime_r(&RawTime, &TimeInfo);
-    DisplayFormattedTime((uint8_t*)"UTC (0:00)", &TimeInfo, true, RawTime);
+    gmtime_r(&lRawTime, &stTimeInfo);
+    DisplayFormattedTime((uint8_t*)"UTC (0:00)", &stTimeInfo, true, lRawTime);
 
     // IST (+05:30)
-    time_t ISTTime = RawTime + 19800; 
-    gmtime_r(&ISTTime, &TimeInfo);
-    DisplayFormattedTime((uint8_t*)"IST (+05:30)", &TimeInfo, false, 0);
+    time_t ISTTime = lRawTime + 19800; 
+    gmtime_r(&ISTTime, &stTimeInfo);
+    DisplayFormattedTime((uint8_t*)"IST (+05:30)", &stTimeInfo, false, 0);
 
     // PST (-8:00)
-    time_t PSTTime = RawTime - 28800;
-    gmtime_r(&PSTTime, &TimeInfo);
-    DisplayFormattedTime((uint8_t*)"PST (-8:00)", &TimeInfo, false, 0);
+    time_t PSTTime = lRawTime - 28800;
+    gmtime_r(&PSTTime, &stTimeInfo);
+    DisplayFormattedTime((uint8_t*)"PST (-8:00)", &stTimeInfo, false, 0);
 }
 
 // EOF
