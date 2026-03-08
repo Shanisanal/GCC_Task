@@ -1,4 +1,4 @@
-//**************************** appTimer ****************************** 
+//**************************** appTimer *************************************** 
 // Copyright (c) 2026 Trenser Technology Solutions
 // All Rights Reserved
 //***************************************************************************** 
@@ -25,20 +25,21 @@
  
 //****************************** Local Functions ****************************** 
  
-//****************************** DisplayFormattedTime ******************************
-// Purpose : Display formatted time information including date, time, and optional epoch.
-// Inputs  : plabel      - Pointer to a string label to print above the time/date.
-//           pTimeInfo   - Pointer to a struct tm containing the time information.
+//****************************** DisplayFormattedTime **************************
+// Purpose : Display formatted time information including date, time, and epoch.
+// Inputs  : pucLabel    - Pointer to a string label to print above the time/date.
+//           pstTimeInfo - Pointer to a struct tm containing the time information.
 //           blShowEpoch - Boolean flag to indicate whether to display epoch time.
-//           Epoch       - Epoch time value to display if blShowEpoch is true.
+//           lEpoch      - Epoch time value to display if blShowEpoch is true.
 // Outputs : None
 // Return  : None
 // Notes   : None
 //*****************************************************************************
 
-void DisplayFormattedTime(uint8_t* plabel, struct tm* pTimeInfo, bool blShowEpoch, time_t Epoch) 
+void DisplayFormattedTime(uint8_t* pucLabel, struct tm* pstTimeInfo, 
+                                            bool blShowEpoch, time_t lEpoch) 
 {
-    if(plabel == NULL || pTimeInfo == NULL) 
+    if(pucLabel == NULL || pstTimeInfo == NULL) 
     {
         return;
     }
@@ -46,16 +47,16 @@ void DisplayFormattedTime(uint8_t* plabel, struct tm* pTimeInfo, bool blShowEpoc
     uint8_t ucDateStr[ARRAY_SIZE]= {0};
     uint8_t ucTimeStr[ARRAY_SIZE]= {0};
 
-    strftime((char*)ucDateStr, sizeof(ucDateStr), "%d/%m/%Y", pTimeInfo);//pTimeInfo
-    strftime((char*)ucTimeStr, sizeof(ucTimeStr), "%I:%M:%S %p", pTimeInfo);
+    strftime((char*)ucDateStr, sizeof(ucDateStr), "%d/%m/%Y", pstTimeInfo);
+    strftime((char*)ucTimeStr, sizeof(ucTimeStr), "%I:%M:%S %p", pstTimeInfo);
 
-    printf("%s\n----------------\n", plabel);
+    printf("%s\n----------------\n", pucLabel);
     printf("Time : %s\n", ucTimeStr);
     printf("Date : %s\n", ucDateStr);
 
     if (blShowEpoch == true) 
     {
-        printf("Epoch: %ld\n", (long)Epoch);
+        printf("Epoch: %ld\n", (long)lEpoch);
     }
     printf("\n");
 }
