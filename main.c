@@ -44,7 +44,6 @@ int main(void)
         printf("==================================\n");
         DisplayCurrentTime();   
         printf("==================================\n\n");
-
         sleep(1);   
     }
     return 0;
