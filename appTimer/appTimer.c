@@ -87,9 +87,9 @@ bool GetCurrentTimeDate(void)
     {
         time(&lRawTime);
 
-        struct tm* lUTCResult = gmtime_r(&lRawTime, &stTimeInfo);
+        struct tm* pstUTCResult = gmtime_r(&lRawTime, &stTimeInfo);
 
-        if(lUTCResult != NULL)
+        if(pstUTCResult != NULL)
         {
             DisplayFormattedTime(LABEL_UTC, &stTimeInfo, true, lRawTime);
         }
@@ -103,9 +103,9 @@ bool GetCurrentTimeDate(void)
     {
         lISTTime = lRawTime + OFFSET_IST;
 
-        struct tm*  lISTResult = gmtime_r(&lISTTime, &stTimeInfo);
+        struct tm* pstISTResult = gmtime_r(&lISTTime, &stTimeInfo);
 
-        if(lISTResult != NULL)
+        if(pstISTResult != NULL)
         {
             DisplayFormattedTime(LABEL_IST, &stTimeInfo, false, 0);
         }
@@ -119,9 +119,9 @@ bool GetCurrentTimeDate(void)
     {
         lPSTTime = lRawTime - OFFSET_PST;
 
-        struct tm*  lPSTResult = gmtime_r(&lPSTTime, &stTimeInfo);
+        struct tm* pstPSTResult = gmtime_r(&lPSTTime, &stTimeInfo);
 
-        if(lPSTResult != NULL)
+        if(pstPSTResult != NULL)
         {
             DisplayFormattedTime(LABEL_PST, &stTimeInfo, false, 0);
         }
