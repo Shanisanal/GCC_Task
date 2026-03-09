@@ -42,6 +42,7 @@ int main(void)
 {
     TimeDisplayInfo stTimeInfo[NUM_ZONES] = {0};
     bool blDisplaySuccess = false;
+    int lReturnCode = 1;
    
     while(1)
     {
@@ -50,26 +51,16 @@ int main(void)
        if(blDisplaySuccess == true)
        {
             printf("==================================\n");
-
-            for(int i = 0; i < NUM_ZONES; i++)
-            {
-                printf("%s\n", stTimeInfo[i].ucLabel);
-                printf("----------------\n");
-                printf("Time : %s\n", stTimeInfo[i].ucTime);
-                printf("Date : %s\n", stTimeInfo[i].ucDate);
-                
-                if(stTimeInfo[i].blShowEpoch)
-                {
-                    printf("Epoch: %ld\n", stTimeInfo[i].lEpoch);
-                }
-                printf("\n");
-            }
-
-            printf("==================================\n\n");
+            lReturnCode = 0;
        }
+       else
+       {
+            lReturnCode = 1;
+       }
+
        sleep(1);   
     }
-    return 0;
+    return lReturnCode;
 }
 
 // EOF
