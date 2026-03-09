@@ -69,7 +69,7 @@ void DisplayFormattedTime(const char* pcLabel, struct tm* pstTimeInfo,
 
 //****************************** GetCurrentTimeDate ******************************
 // Purpose : Retrieve and display the current system time in multiple time zones.
-// Inputs  : TimeDisplayInfo 
+// Inputs  : None 
 // Outputs : None
 // Return  : None
 // Notes   : None
