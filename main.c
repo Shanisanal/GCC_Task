@@ -19,7 +19,6 @@
 //******************************* Local Types ********************************* 
  
 //***************************** Local Constants ******************************* 
- #define NUM_ZONES           3
 
 //***************************** Local Variables ******************************* 
  
@@ -40,13 +39,12 @@
 
 int main(void)
 {
-    TimeDisplayInfo stTimeInfo[NUM_ZONES] = {0};
     bool blDisplaySuccess = false;
     int lReturnCode = 1;
    
     while(1)
     {
-       blDisplaySuccess = GetCurrentTimeDate(stTimeInfo);
+       blDisplaySuccess = GetCurrentTimeDate();
 
        if(blDisplaySuccess == true)
        {
