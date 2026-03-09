@@ -1,4 +1,4 @@
-//**************************** GCC_Task ****************************** 
+//**************************** GCC_Task ***************************************
 //  Copyright (c) 2026 Trenser Technology Solutions
 //  All Rights Reserved 
 //***************************************************************************** 
@@ -26,15 +26,11 @@
 
 //****************************** main *****************************************
 // Purpose : Continuously display formatted time information in multiple timezones
-//           (GMT, IST, PST) along with optional epoch time. The display refreshes
-//           every second to show real-time updates.
+//           (GMT, IST, PST) along with optional epoch time.
 // Inputs  : None
 // Outputs : None
 // Return  : Returns 0 upon successful completion.
-// Notes   : 
-//   - Calls GetCurrentTimeDate() to print the current time details.
-//   - Uses sleep(1) to refresh the output every second.
-//   - Runs indefinitely until manually terminated.
+// Notes   : Runs indefinitely until manually terminated.
 //*****************************************************************************
 
 int main(void)
