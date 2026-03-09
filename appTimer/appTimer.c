@@ -15,13 +15,17 @@
 #include <stdio.h>
 #include <time.h>
 #include "appTimer.h"
+#include <stdbool.h>
  
 //******************************* Local Types ********************************* 
  
 //***************************** Local Constants ******************************* 
-#define ARRAY_SIZE      32
 #define OFFSET_IST      19800   
 #define OFFSET_PST      28800   
+#define LABEL_UTC       "UTC (0:00)"
+#define LABEL_IST       "IST (+05:30)"
+#define LABEL_PST       "PST (-08:00)"
+
 
 //***************************** Local Variables ******************************* 
  
@@ -29,69 +33,111 @@
  
 //****************************** DisplayFormattedTime **************************
 // Purpose : Display formatted time information including date, time, and epoch.
-// Inputs  : pucLabel    - Pointer to a string label to print above the time/date.
-//           pstTimeInfo - Pointer to a struct tm containing the time information.
-//           blShowEpoch - Boolean flag to indicate whether to display epoch time.
-//           lEpoch      - Epoch time value to display if blShowEpoch is true.
+// Inputs  : pcLabel    - Pointer to a string label to print above the time/date.
+//           pstTimeInfo- Pointer to a struct tm containing the time information.
+//           blShowEpoch- Boolean flag to indicate whether to display epoch time.
+//           lEpoch     - Epoch time value to display if blShowEpoch is true.
 // Outputs : None
 // Return  : None
 // Notes   : None
 //*****************************************************************************
 
-void DisplayFormattedTime(uint8_t* pucLabel, struct tm* pstTimeInfo, 
-                                            bool blShowEpoch, time_t lEpoch) 
+void DisplayFormattedTime(const char* pcLabel, struct tm* pstTimeInfo, 
+                                            bool blShowEpoch, long lEpoch) 
 {
-    if(pucLabel == NULL || pstTimeInfo == NULL) 
+    uint8_t ucDateStr[ARRAY_SIZE]= {0};
+    uint8_t ucTimeStr[ARRAY_SIZE]= {0};
+
+    if(pcLabel == NULL || pstTimeInfo == NULL) 
     {
         return;
     }
 
-    uint8_t ucDateStr[ARRAY_SIZE]= {0};
-    uint8_t ucTimeStr[ARRAY_SIZE]= {0};
-
     strftime((char*)ucDateStr, sizeof(ucDateStr), "%d/%m/%Y", pstTimeInfo);
     strftime((char*)ucTimeStr, sizeof(ucTimeStr), "%I:%M:%S %p", pstTimeInfo);
 
-    printf("%s\n----------------\n", pucLabel);
+    printf("%s\n----------------\n", pcLabel);
     printf("Time : %s\n", ucTimeStr);
     printf("Date : %s\n", ucDateStr);
 
     if (blShowEpoch == true) 
     {
-        printf("Epoch: %ld\n", (long)lEpoch);
+        printf("Epoch: %ld\n", lEpoch);
     }
     printf("\n");
 }
 
-//****************************** DisplayCurrentTime ******************************
+//****************************** GetCurrentTimeDate ******************************
 // Purpose : Retrieve and display the current system time in multiple time zones.
-// Inputs  : None
-// Outputs : Prints formatted time and date for UTC, IST, and PST to the console.
+// Inputs  : TimeDisplayInfo 
+// Outputs : None
 // Return  : None
 // Notes   : None
 //*****************************************************************************
 
-void DisplayCurrentTime() 
+bool GetCurrentTimeDate(TimeDisplayInfo* pstTimeInfo) 
 {
-    time_t lRawTime = 0;
+    long lRawTime = 0;
     struct tm stTimeInfo = {0};
+    bool blGetTimeSuccess = true;
+    long lISTTime = 0;
+    long lPSTTime = 0;
+    
+    if(pstTimeInfo == NULL) 
+    {
+        blGetTimeSuccess = false;
+    }
 
-    // Get current system time
-    time(&lRawTime);
+    if(blGetTimeSuccess == true)
+    {
+        time(&lRawTime);
 
-    // GMT (UTC)
-    gmtime_r(&lRawTime, &stTimeInfo);
-    DisplayFormattedTime((uint8_t*)"UTC (0:00)", &stTimeInfo, true, lRawTime);
+        struct tm* lUTCResult = gmtime_r(&lRawTime, &stTimeInfo);
 
-    // IST (+05:30)
-    time_t ISTTime = lRawTime + OFFSET_IST; 
-    gmtime_r(&ISTTime, &stTimeInfo);
-    DisplayFormattedTime((uint8_t*)"IST (+05:30)", &stTimeInfo, false, 0);
+        if(lUTCResult != NULL)
+        {
+            DisplayFormattedTime(LABEL_UTC, &stTimeInfo, true, lRawTime);
+        }
+        else
+        {
+            blGetTimeSuccess =  false;
+        }
+    }
 
-    // PST (-8:00)
-    time_t PSTTime = lRawTime - OFFSET_PST;
-    gmtime_r(&PSTTime, &stTimeInfo);
-    DisplayFormattedTime((uint8_t*)"PST (-8:00)", &stTimeInfo, false, 0);
+    if(blGetTimeSuccess == true)
+    {
+        lISTTime = lRawTime + OFFSET_IST;
+
+        struct tm*  lISTResult = gmtime_r(&lISTTime, &stTimeInfo);
+
+        if(lISTResult != NULL)
+        {
+            DisplayFormattedTime(LABEL_IST, &stTimeInfo, false, 0);
+        }
+        else
+        {
+            blGetTimeSuccess =  false;
+        }
+    }
+
+    if(blGetTimeSuccess == true)
+    {
+        lPSTTime = lRawTime - OFFSET_PST;
+
+        struct tm*  lPSTResult = gmtime_r(&lPSTTime, &stTimeInfo);
+
+        if(lPSTResult != NULL)
+        {
+            DisplayFormattedTime(LABEL_PST, &stTimeInfo, false, 0);
+        }
+        else
+        {
+            blGetTimeSuccess =  false;
+        }
+  
+    }
+
+    return blGetTimeSuccess;
 }
 
 // EOF
