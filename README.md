@@ -15,4 +15,4 @@
 ##  Compilation and Run
 ### Direct GCC command:
 - gcc main.c appTimer/appTimer.c -o appTimerexe
-- ./appTimerexe 
+- ./appTimer.exe 
