@@ -25,7 +25,7 @@
 #define LABEL_UTC       "UTC (0:00)"
 #define LABEL_IST       "IST (+05:30)"
 #define LABEL_PST       "PST (-08:00)"
-
+ #define ARRAY_SIZE      32
 
 //***************************** Local Variables ******************************* 
  
@@ -75,18 +75,13 @@ void DisplayFormattedTime(const char* pcLabel, struct tm* pstTimeInfo,
 // Notes   : None
 //*****************************************************************************
 
-bool GetCurrentTimeDate(TimeDisplayInfo* pstTimeInfo) 
+bool GetCurrentTimeDate(void) 
 {
     long lRawTime = 0;
     struct tm stTimeInfo = {0};
     bool blGetTimeSuccess = true;
     long lISTTime = 0;
     long lPSTTime = 0;
-    
-    if(pstTimeInfo == NULL) 
-    {
-        blGetTimeSuccess = false;
-    }
 
     if(blGetTimeSuccess == true)
     {
