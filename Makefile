@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -O2
 SRC = main.c appTimer/appTimer.c
 OBJ = $(SRC:.c=.o)
 ASM = $(SRC:.c=.s)
-TARGET = appTimerexe
+TARGET = appTimer.exe
 
 all: $(TARGET)
 
