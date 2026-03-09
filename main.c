@@ -37,7 +37,7 @@ int main(void)
 {
     bool blDisplaySuccess = false;
     int lReturnCode = 1;
-   
+
     while(1)
     {
        blDisplaySuccess = GetCurrentTimeDate();
