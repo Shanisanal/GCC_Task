@@ -23,16 +23,26 @@
 //******************************* Global Types ******************************** 
  
 //***************************** Global Constants ****************************** 
+ #define ARRAY_SIZE      32
  
 //***************************** Global Variables ****************************** 
- 
+typedef struct _TimeDisplayInfo_
+{
+    uint8_t ucLabel[ARRAY_SIZE];
+    uint8_t ucDate[ARRAY_SIZE];
+    uint8_t ucTime[ARRAY_SIZE];
+    bool blShowEpoch;
+    long lEpoch;
+} TimeDisplayInfo; 
+
 //**************************** Forward Declarations *************************** 
-void DisplayCurrentTime();   
-void DisplayFormattedTime(uint8_t* plabel, struct tm* t, bool blShowEpoch, time_t Epoch) ;
- 
+bool GetCurrentTimeDate(TimeDisplayInfo* pstTimeInfo);
+void DisplayFormattedTime(const char* pcLabel, struct tm* pstTimeInfo, 
+                                            bool blShowEpoch, long lEpoch) ;
+                                            
 //***************************** Class Declaration ***************************** 
  
 //*********************** Inline Method Implementations *********************** 
  
 #endif // _APPTIMER_H_ 
-// EOF 
+// EOF
