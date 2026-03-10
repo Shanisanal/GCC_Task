@@ -60,7 +60,7 @@ else
 fi
 echo "" >> $REPORT
 
-echo "===== End of Report =====" >> $REPORT
+echo "===== End of Report =====" | tee -a $REPORT
 
 
 
