@@ -45,6 +45,7 @@ int main(void)
        if(blDisplaySuccess == true)
        {
             printf("==================================\n");
+            fflush(stdout);
             lReturnCode = 0;
        }
        else
