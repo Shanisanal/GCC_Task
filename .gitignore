@@ -16,3 +16,6 @@
 # Ignore build directory if used
 /build/
 
+# Ignore txt files
+*.txt
+
