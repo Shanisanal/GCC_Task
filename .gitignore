@@ -1,0 +1,21 @@
+# Ignore build artifacts
+*.o
+*.s
+*.exe
+*.bin
+
+# Ignore VS Code settings
+.vscode/
+
+
+# Ignore editor backup/swap files
+*.swp
+*~
+*.save
+
+# Ignore build directory if used
+/build/
+
+# Ignore txt files
+*.txt
+
